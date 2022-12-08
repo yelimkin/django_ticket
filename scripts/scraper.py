@@ -21,7 +21,7 @@ items = soup.select("#ticketOpen_bn > div.list > ul:nth-child(3) > li > a")
 during_date = 2
 
 def run():
-    row, _ = SendMssg.objects.filter(c_date__iexact = datetime.now() - timedelta(minutes=during_date)).delete()
+    row, _ = SendMssg.objects.filter(c_date__lte = datetime.now() - timedelta(minutes=during_date)).delete()
     print(row, "deals deleted")
 
     for item in items:
@@ -34,6 +34,7 @@ def run():
             # print(title)
 
             link = item.get("href")
+            link = "http://ticket.interpark.com/webzine/paper/" + link
             # print(link)
 
             open_date = item.select("span.info > span.date")[0].text.strip()
@@ -42,13 +43,13 @@ def run():
             cur_stat = item.select("span.info > span.txt")[0].text.strip()
             # print(cur_stat)
 
-            db_link_cnt = Deal.objects.filter(link__iexact=link).count()
+            db_link_cnt = SendMssg.objects.filter(link__iexact=link).count()
             if(db_link_cnt == 0):
 
                 message = f"{title} -- {open_date} -- {cur_stat}"
                 tlgm_bot.sendMessage(ei.chat_id, message)
 
-                SendMssg(img_url=img_url, title=title, link=link, open_date=open_date, cur_stat=cur_stat)
+                SendMssg(img_url=img_url, title=title, link=link, open_date=open_date, cur_stat=cur_stat).save()
 
         except Exception as e:
             continue
