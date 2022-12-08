@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from alarm.views import index
+from alarm.views import dashboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    # path('dashboard/', dashboard),
+    path('dashboard/', dashboard),
 ]

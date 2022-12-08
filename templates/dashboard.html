@@ -7,10 +7,15 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="col">
+        <canvas id="myChart"></canvas>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     {% block script %}
     <script>
+        const ctx = document.getElementById('myChart');
         const config = {
             type: 'bar',
             data: data,
@@ -28,24 +33,26 @@
             }
         };
 
-        const DATA_COUNT = {{op_dates_m}};
+        const DATA_COUNT = '{{op_dates_m}}';
         const NUMBER_CFG = {count: DATA_COUNT, min: 1, max: 31};
 
-        const labels = Utils.months({count: {{op_dates_m}} });
+        const labels = Utils.months({count: '{{op_dates_m}}' });
         const data = {
-        labels: labels,
-        datasets: [
-            {% for brd in boards %}
-            {
-                label: '{{ brd.title }}',
-                data: labels.map(() => {
-                    return [{{ brd.open_date_d }}, {{ brd.open_date_dn }}];
-                }),
-                backgroundColor: Utils.CHART_COLORS.red,
-            },
-            {% forend %}
-        ]
-    };
+            labels: labels,
+            datasets: [
+                {% for brd in boards %}
+                    {
+                        label: '{{ brd.title }}',
+                        data: labels.map(() => {
+                            return ['{{ brd.open_date_d }}', '{{ brd.open_date_dn }}'];
+                        }),
+                        backgroundColor: Utils.CHART_COLORS.red,
+                    },
+                {% endfor %}
+            ]
+        };
+        
+        new Chart(ctx, config);
     </script>
     {% endblock script %}
 </body>
