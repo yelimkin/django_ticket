@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {% block script %}
+    <script>
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Chart.js Floating Bar Chart'
+                    }
+                }
+            }
+        };
+
+        const DATA_COUNT = {{op_dates_m}};
+        const NUMBER_CFG = {count: DATA_COUNT, min: 1, max: 31};
+
+        const labels = Utils.months({count: {{op_dates_m}} });
+        const data = {
+        labels: labels,
+        datasets: [
+            {% for brd in boards %}
+            {
+                label: '{{ brd.title }}',
+                data: labels.map(() => {
+                    return [{{ brd.open_date_d }}, {{ brd.open_date_dn }}];
+                }),
+                backgroundColor: Utils.CHART_COLORS.red,
+            },
+            {% forend %}
+        ]
+    };
+    </script>
+    {% endblock script %}
+</body>
+</html>
