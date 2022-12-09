@@ -20,7 +20,7 @@ soup_al = BeautifulSoup(res_al.text, "html.parser")
 
 items_al = soup_al.select("#ticketOpen_bn > div.list > ul:nth-child(3) > li > a")
 # items_da = soup_da.select("body > div.rankingDetailBody")
-# print(items_da)
+# print(items_al)
 # print(len(items))
 
 during_date = 2
@@ -28,7 +28,7 @@ during_date = 2
 def run():
     row, _ = SendMssg.objects.filter(c_date__lte = datetime.now() - timedelta(minutes=during_date)).delete()
     print(row, "deals deleted")
-
+    # print(items_al)
     for item in items_al:
         try:
             # print(item)
@@ -43,19 +43,24 @@ def run():
             # print(link)
 
             open_date = item.select("span.info > span.date")[0].text.strip()
+            # print(open_date)
             open_date_m = open_date.split('.')[1]
+            # print(open_date_m)
             open_date_d = open_date.split('.')[-1].split('(')[0]
-            open_date_dn = open_date_d + 1 
             # print(open_date_d)
+            open_date_dn = int(open_date_d) + 1 
+
 
             cur_stat = item.select("span.info > span.txt")[0].text.strip()
             # print(cur_stat)
 
+            # print(title, link, open_date)
             db_link_cnt = SendMssg.objects.filter(link__iexact=link).count()
             if(db_link_cnt == 0):
 
                 message_al = f"{title} -- {open_date} -- {cur_stat}"
-                tlgm_bot.sendMessage(ei.chat_id, message_al)
+                # tlgm_bot.sendMessage(ei.chat_id, message_al)
+                tlgm_bot.sendPhoto(ei.chat_id, photo=img_url,  caption=message_al)
 
                 SendMssg(img_url=img_url, title=title, link=link, open_date=open_date, open_date_m=open_date_m, open_date_d=open_date_d, open_date_dn=open_date_dn, cur_stat=cur_stat).save()
 

@@ -18,6 +18,7 @@ from django.urls import path, include
 from alarm.views import index
 from alarm.views import dashboard
 
+app_name = 'dashboard'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),

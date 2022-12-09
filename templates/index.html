@@ -5,36 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 </head>
 <body>
     <div>
-        <div>
-            <h1 style="text-align: center;">인터파크 티켓 정보</h1>
+        <div class="p-3 mb-2 bg-secondary text-white">
+            <figure class="text-center">
+                <h1>
+                    <i class="bi bi-ticket-perforated"> 인터파크 티켓 </i>
+                </h1>
+                <br>
+                <figcaption class="blockquote-footer" style="color: white;">
+                    티켓 오픈 정보 <cite title="Source Title"></cite>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="bg-secondary">
+            <center>
+                <button type="button" class="btn btn-outline-info" style="margin-top: 15px; margin-bottom: 15px;" onclick="location.href='http://127.0.0.1:8000/dashboard/'">일정보기</button>
+            </center>
         </div>
     </div>
-    <div>
-        <table>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            {% for mssg in sendmssgs%}
-            <tr>
-                <td><a href="{{ mssg.img_url }}"><img src="{{ mssg.img_url }}" alt=""></a></td>
-                <td><a href="{{ mssg.link }}">{{ mssg.title }}</a></td>
-                <td>{{ mssg.open_date }}</td>
-                <td>{{ mssg.cur_stat }}</td>
-            </tr>
-            {% endfor %}
-            <div>
-                <button type="button" class="btn btn-outline-info" onclick="location.href='http://127.0.0.1:8000/dashboard/'">메모하기</button>
-            </div>
-        </table>
-    </div>
     
+    <div class="row bg-secondary p-3">
+        {% for mssg in sendmssgs%}
+        <div class="card col-sm-6 w-45 shadow p-3 mb-5 bg-body rounded" style="width: 18rem; margin-left: 25px; margin-right: 25px; margin-bottom: 30px;">
+            <br>
+            <center>
+                <a href="{{ mssg.img_url }}" style="margin-top: 25px;">
+                    <img src="{{ mssg.img_url }}" class="rounded me-2" alt="" style="width:230px; height:380px;">
+                </a>
+            </center>
+            <div class="card-body" style="text-align: center;">
+                <button type="button" class="btn btn-primary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="" onclick="location.href='{{ mssg.link }}'" style="">
+                    {{ mssg.title }}
+                </button>
+                <h6 style="margin-top: 25px;">{{ mssg.open_date }} <span class="badge bg-secondary">{{ mssg.cur_stat }}</span></h6>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
