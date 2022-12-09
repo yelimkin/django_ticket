@@ -22,5 +22,5 @@ app_name = 'dashboard'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    path('dashboard/', dashboard),
+    path('dashboard/', dashboard, name="dashboard"),
 ]
